@@ -1,10 +1,12 @@
 pipeline {
     agent { label 'maven-agent' }
-
+environment {
+     PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
+}
     stages {
-        stage('Clone code') {
+        stage('build'){
             steps {
-                git branch: 'main', url: 'https://github.com/D-dev-2099/Deepthi-ttrend.git'
+                sh 'mvn clean deploy'
             }
         }
     }
