@@ -6,7 +6,8 @@ environment {
     stages {
         stage('build'){
             steps {
-                sh 'mvn clean deploy'
+                sh 'mvn clean deploy -Dmaven.compiler.source=11 -Dmaven.compiler.target=11'
+
             }
         }
     }
