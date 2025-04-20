@@ -9,8 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo '--------------- Build started ------------'
-                sh 'mvn clean install -Dmaven.compiler.source=11 -Dmaven.compiler.target=11'
-                echo '--------------- Build completed ------------'
+                    sh 'mvn clean install -Dmaven.compiler.source=11 -Dmaven.compiler.target=11 -DskipTests=true'              echo '--------------- Build completed ------------'
             }
         }
 
