@@ -1,8 +1,11 @@
 pipeline {
     agent { label 'maven-agent' }
+
     environment {
-        PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
+        M2_HOME = "/opt/apache-maven-3.9.9"
+        PATH = "${M2_HOME}/bin:${env.PATH}"
     }
+
     stages {
         stage('Build') {
             steps {
@@ -26,7 +29,7 @@ pipeline {
             }
             steps {
                 echo '--------------- Sonar started ------------'
-                withSonarQubeEnv('Valaxy-SonarQube-Server') { // If you have configured more than one global server connection, you can specify its name
+                withSonarQubeEnv('Valaxy-SonarQube-Server') {
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
                 echo '--------------- Sonar Completed ------------'
@@ -34,4 +37,3 @@ pipeline {
         }
     }
 }
-
