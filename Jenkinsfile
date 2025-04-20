@@ -19,7 +19,6 @@ environment {
                     echo '--------------- Unit Test completed ------------'
                 }
             }
-        }
         stage('SonarQube analysis') {
             environment {
                  scannerHome = tool 'Valaxy-SonarScanner'
