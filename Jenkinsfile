@@ -1,15 +1,14 @@
 pipeline {
     agent { label 'maven-agent' }
-
     environment {
         PATH = "/opt/apache-maven-3.9.9/bin:$PATH"
     }
-
     stages {
         stage('Build') {
             steps {
                 echo '--------------- Build started ------------'
-                    sh 'mvn clean install -Dmaven.compiler.source=11 -Dmaven.compiler.target=11 -DskipTests=true'              echo '--------------- Build completed ------------'
+                sh 'mvn clean install -Dmaven.compiler.source=11 -Dmaven.compiler.target=11 -DskipTests=true'
+                echo '--------------- Build completed ------------'
             }
         }
 
@@ -17,7 +16,6 @@ pipeline {
             steps {
                 echo '--------------- Unit Test started ------------'
                 sh 'mvn surefire-report:report'
-                junit '**/target/surefire-reports/*.xml'
                 echo '--------------- Unit Test completed ------------'
             }
         }
@@ -28,24 +26,12 @@ pipeline {
             }
             steps {
                 echo '--------------- Sonar started ------------'
-                withSonarQubeEnv('Valaxy-SonarQube-Server') {
+                withSonarQubeEnv('Valaxy-SonarQube-Server') { // If you have configured more than one global server connection, you can specify its name
                     sh "${scannerHome}/bin/sonar-scanner"
                 }
                 echo '--------------- Sonar Completed ------------'
             }
         }
     }
-
-    post {
-        always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
-        }
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
-        }
-    }
 }
+
